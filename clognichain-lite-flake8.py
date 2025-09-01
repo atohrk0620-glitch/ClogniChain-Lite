@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 """
-clognichain_lite_flake8.py — ClogniChain (Lightweight OSS Edition, Pure-Python)
+clognichain-lite-flake8.py — ClogniChain (Lightweight OSS Edition, Pure-Python)
+flake8 safe: max line length ~80
 """
 
 from __future__ import annotations
@@ -90,11 +91,17 @@ class Logger:
         with self.lock:
             with gzip.open(self.path, "at", encoding="utf-8") as f:
                 f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+
             with sqlite3.connect(self.db) as conn:
                 cur = conn.cursor()
                 cur.execute(
                     "INSERT INTO audit_index VALUES (?, ?, ?, ?)",
-                    (ts, sha, source, json.dumps(payload, ensure_ascii=False)),
+                    (
+                        ts,
+                        sha,
+                        source,
+                        json.dumps(payload, ensure_ascii=False),
+                    ),
                 )
                 conn.commit()
 
@@ -102,14 +109,22 @@ class Logger:
         with sqlite3.connect(self.db) as conn:
             cur = conn.cursor()
             cur.execute(
-                "SELECT ts, sha, source, payload FROM audit_index "
-                "WHERE payload LIKE ? "
-                "ORDER BY ts DESC LIMIT ?",
+                (
+                    "SELECT ts, sha, source, payload "
+                    "FROM audit_index "
+                    "WHERE payload LIKE ? "
+                    "ORDER BY ts DESC LIMIT ?"
+                ),
                 (f"%{term}%", limit),
             )
             rows = cur.fetchall()
         return [
-            {"ts": ts, "sha": sha, "source": source, "payload": json.loads(payload)}
+            {
+                "ts": ts,
+                "sha": sha,
+                "source": source,
+                "payload": json.loads(payload),
+            }
             for ts, sha, source, payload in rows
         ]
 
@@ -117,13 +132,21 @@ class Logger:
         with sqlite3.connect(self.db) as conn:
             cur = conn.cursor()
             cur.execute(
-                "SELECT ts, sha, source, payload FROM audit_index "
-                "ORDER BY ts DESC LIMIT ?",
+                (
+                    "SELECT ts, sha, source, payload "
+                    "FROM audit_index "
+                    "ORDER BY ts DESC LIMIT ?"
+                ),
                 (n,),
             )
             rows = cur.fetchall()
         return [
-            {"ts": ts, "sha": sha, "source": source, "payload": json.loads(payload)}
+            {
+                "ts": ts,
+                "sha": sha,
+                "source": source,
+                "payload": json.loads(payload),
+            }
             for ts, sha, source, payload in rows
         ]
 
