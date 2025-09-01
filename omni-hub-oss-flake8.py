@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 """
-omni_hub_oss_flake8.py — OmniHub OSS (Pure-Python, Lightweight)
+omni-hub-oss-flake8.py — OmniHub OSS (Pure-Python, Lightweight)
+flake8 safe: max line length ~80
 """
 
 from __future__ import annotations
