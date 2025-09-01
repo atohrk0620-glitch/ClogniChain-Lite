@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 """
-clognichain-lite-flake8.py — ClogniChain (Lightweight OSS Edition, Pure-Python)
-flake8 safe: max line length ~80
+clognichain-lite.py — ClogniChain (Lightweight OSS Edition, Pure-Python)
+Clean code: flake8 + black + isort compatible
 """
 
 from __future__ import annotations
@@ -110,10 +110,8 @@ class Logger:
             cur = conn.cursor()
             cur.execute(
                 (
-                    "SELECT ts, sha, source, payload "
-                    "FROM audit_index "
-                    "WHERE payload LIKE ? "
-                    "ORDER BY ts DESC LIMIT ?"
+                    "SELECT ts, sha, source, payload FROM audit_index "
+                    "WHERE payload LIKE ? ORDER BY ts DESC LIMIT ?"
                 ),
                 (f"%{term}%", limit),
             )
@@ -133,8 +131,7 @@ class Logger:
             cur = conn.cursor()
             cur.execute(
                 (
-                    "SELECT ts, sha, source, payload "
-                    "FROM audit_index "
+                    "SELECT ts, sha, source, payload FROM audit_index "
                     "ORDER BY ts DESC LIMIT ?"
                 ),
                 (n,),
