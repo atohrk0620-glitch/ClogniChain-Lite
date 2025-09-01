@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 """
-omni-hub-oss-flake8.py — OmniHub OSS (Pure-Python, Lightweight)
-flake8 safe: max line length ~80
+omni-hub-oss.py — OmniHub OSS (Pure-Python, Lightweight)
+Clean code: flake8 + black + isort compatible
 """
 
 from __future__ import annotations
@@ -43,7 +43,7 @@ class OmniHub:
 class HubHandler(http.server.BaseHTTPRequestHandler):
     hub: OmniHub = None  # 型ヒント用
 
-    def do_POST(self):
+    def do_POST(self) -> None:
         length = int(self.headers.get("Content-Length", 0))
         body = self.rfile.read(length).decode()
         try:
